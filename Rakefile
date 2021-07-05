@@ -8,6 +8,18 @@ task :environment do
   ENV['RACK_ENV'] ||= 'development'
 end
 
+require 'mongo'
+require 'json'
+task :seed do
+  data = JSON.parse (File.read './rushing.json'), symbolize_names: true
+  puts "#{data.size} player entries found"
+
+  client = Mongo::Client.new(['127.0.0.1:27017'], :database => 'local')  
+  client[:players].drop
+  result = client[:players].insert_many data
+  puts "#{result.inserted_count} player entries added"
+end
+
 # rspec tasks
 require 'rspec/core'
 require 'rspec/core/rake_task'

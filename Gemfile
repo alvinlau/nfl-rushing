@@ -14,9 +14,13 @@ gem 'grape-entity'
 gem 'grape-swagger'
 gem 'grape-swagger-entity'
 
+# Mongo
+gem 'json'
+gem 'mongo'
+
 group :development, :test do
   gem 'grape-starter'
-  gem 'pry'
+  gem 'byebug'
   gem 'rack-test'
   gem 'rake'
   gem 'rspec'
