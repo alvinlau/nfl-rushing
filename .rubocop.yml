@@ -1,0 +1,26 @@
+AllCops:
+  Exclude:
+    - '**/tmp/**/*'
+    - '**/script/**/*'
+    - Rakefile
+    - Gemfile
+  UseCache: true
+  NewCops: enable
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/BlockLength:
+  Exclude:
+    - 'api/endpoints/**/*'
+Metrics/MethodLength:
+  Max: 20
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
