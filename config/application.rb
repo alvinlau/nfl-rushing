@@ -44,7 +44,9 @@ class App
   end
 
   def call(env)
-    if Api::Base.recognize_path(env['REQUEST_PATH'])
+    if env['REQUEST_PATH'] == '/'
+      Api::Endpoints::Html.call(env)
+    elsif Api::Base.recognize_path(env['REQUEST_PATH'])
       Api::Base.call(env)
     elsif env['REQUEST_PATH'] == '/doc'
       DocApp.new.call(env)

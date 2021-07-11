@@ -1,0 +1,39 @@
+
+doctype html
+html
+  head
+    title NFL Rush Players
+    meta name="author" content=author
+    link[href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"]
+    link[href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"]
+    script[src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"]
+    script[src="https://unpkg.com/htmx.org@1.4.1"]
+
+  body
+    h1 NFL Rush Players
+
+    form hx-get="/v1/players" hx-params="filter_name"
+      div class="input-field"
+        input value=filter_name placeholder="Player name" name="filter_name" id="filter_name" type="text"
+        label for="filter_name"
+          | Filter name
+        button
+          | Filter
+    #content
+      p Browse players.  Filter and sort.
+
+      - unless players.empty?
+        table
+          - players.each do |player|
+            tr
+              td.name = player['Player']
+              td.yards = player['Yds']
+              td.touchdowns = player['TD']
+              td.longestrush = player['Lng']
+      - else
+        p
+         | No players found.  Please update search.
+           Thank you!
+
+    div id="footer"
+      | Copyright © #{year} #{author}

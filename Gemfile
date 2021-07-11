@@ -18,6 +18,11 @@ gem 'grape-swagger-entity'
 gem 'json'
 gem 'mongo'
 
+# Rendering
+gem 'slim'
+gem 'tilt'
+gem 'ostruct'
+
 group :development, :test do
   gem 'grape-starter'
   gem 'byebug'
@@ -25,4 +30,5 @@ group :development, :test do
   gem 'rake'
   gem 'rspec'
   gem 'rubocop'
+  gem 'shotgun'
 end
