@@ -17,12 +17,13 @@ module Api
           optional :filter_name, type: String
         end
         get do
+          # require 'pp'
           @mongo = Mongo::Client.new(['127.0.0.1:27017'], :database => 'local')
           p params
           # get the params
           sort_by = params['sort_by'] || nil
           sort_order = params['sort_order'] || 'asc'
-          filter_name = params['name'] || nil
+          filter_name = params['filter_name'] || nil
           # some sane defaults
           sort_by = nil if !['Yds', 'TD', 'Lng'].include? sort_by
           sort_order = {'asc' => 1, 'desc' => -1}[sort_order]
@@ -32,7 +33,6 @@ module Api
           results = filter_name ? players.find({'Player' => filter_name}) : players.find
           results = sort_by ? results.sort(sort_by => sort_order) : results
           results = results.limit(20).to_a
-          # p results
           # render view
           scope = OpenStruct.new({
             players: results,

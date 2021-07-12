@@ -9,10 +9,10 @@ html
     script[src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"]
     script[src="https://unpkg.com/htmx.org@1.4.1"]
 
-  body
-    h1 NFL Rush Players
+  body id="display-content"
+    h1 NFL Rushing Stats
 
-    form hx-get="/v1/players" hx-params="filter_name"
+    form hx-get="/v1/players" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
       div class="input-field"
         input value=filter_name placeholder="Player name" name="filter_name" id="filter_name" type="text"
         label for="filter_name"
@@ -23,13 +23,41 @@ html
       p Browse players.  Filter and sort.
 
       - unless players.empty?
-        table
+        table class="striped"
+          thead
+            tr
+              th Name
+              th Team
+              th Pos
+              th Total Yards
+              th Touchdowns
+              th Longest
+              th Attempts
+              th Attempts/Game
+              th Yards/Attempt
+              th Yards/Game
+              th 1st Down
+              th 1st Down %
+              th 20+ Yards
+              th 40+ Yards
+              th Fumbles
           - players.each do |player|
             tr
               td.name = player['Player']
+              td.team = player['Team']
+              td.pos = player['Pos']
               td.yards = player['Yds']
               td.touchdowns = player['TD']
               td.longestrush = player['Lng']
+              td.att = player['Att']
+              td.attpg = player['Att/G']
+              td.avg = player['Avg']
+              td.ydspg = player['Yds/G']
+              td.1st = player['1st']
+              td.1stpc = player['1st%']
+              td.20plus = player['20+']
+              td.40plus = player['40+']
+              td.fum = player['FUM']
       - else
         p
          | No players found.  Please update search.
