@@ -21,7 +21,7 @@ module Api
           p params
           # get the params
           sort_by = params['sort_by'] || nil
-          sort_order = params['sort_order'] || 'desc'
+          sort_order = params['sort_order'] || nil
           filter_name = params['filter_name'] || nil
           filter_name = nil if filter_name && filter_name.empty?
           page = (params['page'] || 1).to_i
@@ -29,22 +29,22 @@ module Api
           per_page = 20
           # some sane defaults
           sort_by = nil if !['Yds', 'TD', 'Lng'].include? sort_by
-          sort_order = {'asc' => 1, 'desc' => -1}[sort_order]
-          sort_order ||= -1
+          query_sort_order = {'asc' => 1, 'desc' => -1}[sort_order] || -1
           # query mongo
           players = @mongo[:players]
           results = filter_name ? players.find({'Player' => filter_name}) : players.find
-          results = sort_by ? results.sort(sort_by => sort_order) : results
+          results = sort_by ? results.sort(sort_by => query_sort_order) : results
           results = results.skip((page-1) * per_page)
           results = results.limit(per_page).to_a
           # render view
           last_page = (players.count / per_page) + (players.count % per_page ? 1 : 0)
           view_sort_order = {'Yds' => 'desc', 'TD' => 'desc', 'Lng' => 'desc'}
-          view_sort_order[sort_by] = {1 => 'desc', -1 => 'asc'}[sort_order] if sort_by
+          view_sort_order[sort_by] = {'asc' => 'desc', 'desc' => 'asc'}[sort_order] if sort_by
           scope = OpenStruct.new({
             players: results,
             sort_by: sort_by,
-            sort_order: view_sort_order,
+            sort_order: sort_order,
+            view_sort_order: view_sort_order,
             filter_name: filter_name,
             page: page,
             last_page: last_page,
