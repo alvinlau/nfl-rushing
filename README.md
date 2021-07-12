@@ -59,6 +59,7 @@ If you have any questions regarding requirements, do not hesitate to email your 
 
 - Mongodb is running, at the default port `27017`, on ubuntu/debian start it via `sudo systemctl start mongod`
 - Ruby 2.7 or higher
+- ruby gem `puma` or similar rack http server gem
 
 ##### Starting the server
 - start the server via `puma config.ru`, by default it runs on port 9292
@@ -89,6 +90,7 @@ If you have any questions regarding requirements, do not hesitate to email your 
 
 ##### Caveats
 -  Will explain in interview :)  but it's still pretty clunky, given more time to experiement I would still use React and picky up prettier UI framework
+-  As they say, if you start with Sinatra or similarly minimal frameworks for Ruby, eventually you'll end up building Rails anyway :)
 
 
 Overall, for something more serious, we should probably use Rails and React, or maybe even something more that can perform better, with more security out of the box, but I intentionally picked a minimal framework for the scope of this assignment.
