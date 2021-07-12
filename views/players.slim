@@ -19,21 +19,23 @@ html
         input value=filter_name placeholder="filter name" name="filter_name" id="filter_name" type="text"
         button class="waves-effect waves-light btn"
           | Filter
-    ul class="pagination"
-      li
-        button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=1" hx-target="#display-content" hx-swap="outerHTML" beginning
-      li
-        - unless page <= 1
-          button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page-1}" hx-target="#display-content" hx-swap="outerHTML" prev
-        - else
-          button class="waves-effect waves-light btn disabled" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page-1}" hx-target="#display-content" hx-swap="outerHTML" prev
-      li
-        - unless page >= last_page
-          button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page+1}" hx-target="#display-content" hx-swap="outerHTML" next
-        - else
-          button class="waves-effect waves-light btn disabled" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page+1}" hx-target="#display-content" hx-swap="outerHTML" next
-      li
-        button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{last_page}" hx-target="#display-content" hx-swap="outerHTML" last
+    - if paginate
+      ul class="pagination"
+        li
+          button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=1" hx-target="#display-content" hx-swap="outerHTML" beginning
+        li
+          - unless page <= 1
+            button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page-1}" hx-target="#display-content" hx-swap="outerHTML" prev
+          - else
+            button class="waves-effect waves-light btn disabled" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page-1}" hx-target="#display-content" hx-swap="outerHTML" prev
+        li
+          - unless page >= last_page
+            button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page+1}" hx-target="#display-content" hx-swap="outerHTML" next
+          - else
+            button class="waves-effect waves-light btn disabled" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page+1}" hx-target="#display-content" hx-swap="outerHTML" next
+        li
+          button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{last_page}" hx-target="#display-content" hx-swap="outerHTML" last
+    a class="waves-effect waves-light btn" href="/v1/players/download?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}" download as csv
     #content
       - unless players.empty?
         table class="striped"
@@ -71,7 +73,7 @@ html
                         | &#9650;
                       - elsif view_sort_order['Lng'] == 'asc'
                         | &#9660;
-                    | Longest
+                    | Longest Rush
               th Attempts
               th Attempts/Game
               th Yards/Attempt
@@ -88,7 +90,7 @@ html
               td.pos = player['Pos']
               td.yards = player['Yds']
               td.touchdowns = player['TD']
-              td.longestrush = player['Lng']
+              td.longestrush = "#{player['Lng']}#{player['LngT']}"
               td.att = player['Att']
               td.attpg = player['Att/G']
               td.avg = player['Avg']
@@ -104,4 +106,4 @@ html
            Thank you!
 
     div id="footer"
-      | Copyright © #{year}
+      | Copyright © #{year} Alvin Lau

@@ -23,6 +23,9 @@ gem 'slim'
 gem 'tilt'
 gem 'ostruct'
 
+# CSV
+gem 'csv'
+
 group :development, :test do
   gem 'grape-starter'
   gem 'byebug'

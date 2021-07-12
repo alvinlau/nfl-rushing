@@ -14,10 +14,21 @@ task :seed do
   data = JSON.parse (File.read './rushing.json'), symbolize_names: true
   puts "#{data.size} player entries found"
 
+  data.map do |player|
+    player[:Yds] = player[:Yds].delete(',').to_i if player[:Yds].is_a? String
+    if player[:Lng].is_a? String
+      player[:LngT] = player[:Lng].last == 'T' ? 'T' : ''
+      player[:Lng] = player[:Lng].delete('T').to_i
+    end
+  end
+  puts "converted values for total yards and longest rush"
+
   client = Mongo::Client.new(['127.0.0.1:27017'], :database => 'local')  
   client[:players].drop
   result = client[:players].insert_many data
   puts "#{result.inserted_count} player entries added"
+  client[:players].indexes.create_one({ "$**": "text" })
+  puts "created index for search"
 end
 
 # rspec tasks
