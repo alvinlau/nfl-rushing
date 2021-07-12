@@ -20,25 +20,30 @@ html
           | Filter name
         button class="waves-effect waves-light btn"
           | Filter
-      p Go to page
+      / p Go to page
       ul class="pagination"
         li
-          form hx-get="/v1/players?page=1" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
-            button class="waves-effect waves-light btn" first
+          form hx-get="/v1/players" hx-params="filter_name,page" hx-target="#display-content" hx-swap="outerHTML"
+            input type="hidden" name="filter_name" value=filter_name
+            input type="hidden" name="page" value=1
+            button class="waves-effect waves-light btn" beginning
         - if page > 1
           li 
             form hx-get="/v1/players" hx-params="filter_name,page" hx-target="#display-content" hx-swap="outerHTML"
               input type="hidden" name="filter_name" value=filter_name
               input type="hidden" name="page" value=(page-1)
-              button class="waves-effect waves-light btn" page #{page-1}
-        / li ... Page #{page} ...
-        li 
-          form hx-get="/v1/players" hx-params="filter_name,page" hx-target="#display-content" hx-swap="outerHTML"
-            input type="hidden" name="filter_name" value=filter_name
-            input type="hidden" name="page" value=page+1
-            button class="waves-effect waves-light btn" page #{page+1}
-        li[class="waves-effort"]
-          button class="waves-effect waves-light btn" last
+              button class="waves-effect waves-light btn" prev
+        - unless page == last_page
+          li
+            form hx-get="/v1/players" hx-params="filter_name,page" hx-target="#display-content" hx-swap="outerHTML"
+              input type="hidden" name="filter_name" value=filter_name
+              input type="hidden" name="page" value=page+1
+              button class="waves-effect waves-light btn" next
+          li
+            form hx-get="/v1/players" hx-params="filter_name,page" hx-target="#display-content" hx-swap="outerHTML"
+              input type="hidden" name="filter_name" value=filter_name
+              input type="hidden" name="page" value=last_page
+              button class="waves-effect waves-light btn" last
     #content
       - unless players.empty?
         table class="striped"

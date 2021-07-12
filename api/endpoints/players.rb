@@ -38,6 +38,7 @@ module Api
           results = results.skip((page-1) * per_page)
           results = results.limit(per_page).to_a
           # render view
+          last_page = (players.count / per_page) + (players.count % per_page ? 1 : 0)
           view_sort_order = {'Yds' => 'desc', 'TD' => 'desc', 'Lng' => 'desc'}
           view_sort_order[sort_by] = {1 => 'desc', -1 => 'asc'}[sort_order] if sort_by
           scope = OpenStruct.new({
@@ -46,6 +47,7 @@ module Api
             sort_order: view_sort_order,
             filter_name: filter_name,
             page: page,
+            last_page: last_page,
             year: 2021 })
           Slim::Template.new('views/players.slim').render(scope)
         end
