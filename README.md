@@ -57,13 +57,16 @@ If you have any questions regarding requirements, do not hesitate to email your 
 
 ##### Requirements
 
-- Mongodb is running, at the default port `27017`, on ubuntu/debian start it via `sudo systemctl start mongod`
 - Ruby 2.7 or higher
 - ruby gem `puma` or similar rack http server gem
+- Mongodb is running, at the default port `27017`
 
 ##### Starting the server
+- clone this repo
+- start Mongodb, e.g. on ubuntu/debian `sudo systemctl start mongod`
+- import the data with `bundle exec rake seed`, this must be done
 - start the server via `puma config.ru`, by default it runs on port 9292
-- (during development shotgun can be used as well `shotgun --server=puma --port=9292 config.ru`)
+- (during development the `shotgun` gem can be used also `shotgun --server=puma --port=9292 config.ru`)
 - navigate to `http://localhost:9292/v1/players` in the browser
 - optionally navigate to `http://localhost:9292/doc` for swagger docs (even though the json api is not used)
 
@@ -71,7 +74,7 @@ If you have any questions regarding requirements, do not hesitate to email your 
 
 ##### Why Mongodb?
 - we're optimizing for reads, there's no realtime update of player records in the requirements
-- there's only one entity type in the data, we literally documents fit for a document db
+- there's only one entity type in the data, we literally have documents fit for a document db
 - we only need to simple filter (search) and sort, mongodb can provide simple indexing for text search
 - conversely, we don't need transactionals and relational joins so we don't need a sql database for this
 
