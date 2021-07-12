@@ -14,7 +14,7 @@ html
       h3 NFL Rushing Stats
     p Browse players.
 
-    form hx-get="/v1/players" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
+    form hx-get="/v1/players?&sort_by=#{sort_by}&sort_order=#{sort_order}" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
       div class="input-field"
         input value=filter_name placeholder="filter name" name="filter_name" id="filter_name" type="text"
         button class="waves-effect waves-light btn"
