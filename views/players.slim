@@ -29,9 +29,18 @@ html
               th Name
               th Team
               th Pos
-              th Total Yards
-              th Touchdowns
-              th Longest
+              th
+                form hx-get="/v1/players?sort_by=Yds&sort_order=#{sort_order['Yds']}" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML" 
+                  input type="hidden" value=filter_name name="filter_name"
+                  button Total Yards
+              th
+                form hx-get="/v1/players?sort_by=TD&sort_order=#{sort_order['TD']}" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
+                  input type="hidden" value=filter_name name="filter_name"
+                  button Touchdowns
+              th
+                form hx-get="/v1/players?sort_by=Lng&sort_order=#{sort_order['Lng']}" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
+                  input type="hidden" value=filter_name name="filter_name"
+                  button Longest
               th Attempts
               th Attempts/Game
               th Yards/Attempt
@@ -64,4 +73,4 @@ html
            Thank you!
 
     div id="footer"
-      | Copyright © #{year} #{author}
+      | Copyright © #{year}

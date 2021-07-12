@@ -22,24 +22,28 @@ module Api
           p params
           # get the params
           sort_by = params['sort_by'] || nil
-          sort_order = params['sort_order'] || 'asc'
+          sort_order = params['sort_order'] || 'desc'
           filter_name = params['filter_name'] || nil
+          filter_name = nil if filter_name && filter_name.empty?
           # some sane defaults
           sort_by = nil if !['Yds', 'TD', 'Lng'].include? sort_by
           sort_order = {'asc' => 1, 'desc' => -1}[sort_order]
-          sort_order ||= 1
+          sort_order ||= -1
           # query mongo
           players = @mongo[:players]
           results = filter_name ? players.find({'Player' => filter_name}) : players.find
           results = sort_by ? results.sort(sort_by => sort_order) : results
           results = results.limit(20).to_a
           # render view
+          view_sort_order = {'Yds' => 'desc', 'TD' => 'desc', 'Lng' => 'desc'}
+          view_sort_order[sort_by] = {1 => 'desc', -1 => 'asc'}[sort_order] if sort_by
           scope = OpenStruct.new({
             players: results,
             page: 1,
             sort_by: sort_by,
-            sort_order: sort_order,
-            filter_name: filter_name })
+            sort_order: view_sort_order,
+            filter_name: filter_name,
+            year: 2021 })
           Slim::Template.new('views/players.slim').render(scope)
         end
 
