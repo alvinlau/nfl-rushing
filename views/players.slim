@@ -17,7 +17,7 @@ html
         input value=filter_name placeholder="Player name" name="filter_name" id="filter_name" type="text"
         label for="filter_name"
           | Filter name
-        button
+        button class="waves-effect waves-light btn"
           | Filter
     #content
       p Browse players.  Filter and sort.
@@ -32,15 +32,33 @@ html
               th
                 form hx-get="/v1/players?sort_by=Yds&sort_order=#{sort_order['Yds']}" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML" 
                   input type="hidden" value=filter_name name="filter_name"
-                  button Total Yards
+                  button class="waves-effect waves-light btn"
+                    - if sort_by == 'Yds'
+                      - if sort_order['Yds'] == 'desc'
+                        | &#9650;
+                      - elsif sort_order['Yds'] == 'asc'
+                        | &#9660;
+                    | Total Yards
               th
                 form hx-get="/v1/players?sort_by=TD&sort_order=#{sort_order['TD']}" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
                   input type="hidden" value=filter_name name="filter_name"
-                  button Touchdowns
+                  button class="waves-effect waves-light btn"
+                    - if sort_by == 'TD'
+                      - if sort_order['TD'] == 'desc'
+                        | &#9650;
+                      - elsif sort_order['TD'] == 'asc'
+                        | &#9660;
+                    | Touchdowns
               th
                 form hx-get="/v1/players?sort_by=Lng&sort_order=#{sort_order['Lng']}" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
                   input type="hidden" value=filter_name name="filter_name"
-                  button Longest
+                  button class="waves-effect waves-light btn" 
+                    - if sort_by == 'Lng'
+                      - if sort_order['Lng'] == 'desc'
+                        | &#9650;
+                      - elsif sort_order['Lng'] == 'asc'
+                        | &#9660;
+                    | Longest
               th Attempts
               th Attempts/Game
               th Yards/Attempt
