@@ -10,7 +10,8 @@ html
     script[src="https://unpkg.com/htmx.org@1.4.1"]
 
   body id="display-content"
-    h1 NFL Rushing Stats
+    h3 NFL Rushing Stats
+    p Browse players.  Filter and sort.
 
     form hx-get="/v1/players" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
       div class="input-field"
@@ -19,18 +20,35 @@ html
           | Filter name
         button class="waves-effect waves-light btn"
           | Filter
+      p Go to page
+      ul class="pagination"
+        li
+          form hx-get="/v1/players?page=1" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
+            button class="waves-effect waves-light btn" first
+        - if page > 1
+          li 
+            form hx-get="/v1/players" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
+              input type="hidden" name="filter_name" value=filter_name
+              input type="hidden" name="page" value=page-1
+              button class="waves-effect waves-light btn" prev
+        li ... Page #{page} ...
+        li 
+          form hx-get="/v1/players" hx-params="filter_name,page" hx-target="#display-content" hx-swap="outerHTML"
+            input type="hidden" name="filter_name" value=filter_name
+            input type="hidden" name="page" value=page+1
+            button class="waves-effect waves-light btn" next
+        li[class="waves-effort"]
+          button class="waves-effect waves-light btn" last
     #content
-      p Browse players.  Filter and sort.
-
       - unless players.empty?
         table class="striped"
           thead
             tr
               th Name
               th Team
-              th Pos
+              th Position
               th
-                form hx-get="/v1/players?sort_by=Yds&sort_order=#{sort_order['Yds']}" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML" 
+                form hx-get="/v1/players?sort_by=Yds&sort_order=#{sort_order['Yds']}" hx-params="filter_name" hx-target="#display-content" hx-swap="outerHTML"
                   input type="hidden" value=filter_name name="filter_name"
                   button class="waves-effect waves-light btn"
                     - if sort_by == 'Yds'

@@ -17,7 +17,6 @@ module Api
           optional :filter_name, type: String
         end
         get do
-          # require 'pp'
           @mongo = Mongo::Client.new(['127.0.0.1:27017'], :database => 'local')
           p params
           # get the params
@@ -25,6 +24,9 @@ module Api
           sort_order = params['sort_order'] || 'desc'
           filter_name = params['filter_name'] || nil
           filter_name = nil if filter_name && filter_name.empty?
+          page = (params['page'] || 1).to_i
+          page = 1 if page < 1
+          per_page = 20
           # some sane defaults
           sort_by = nil if !['Yds', 'TD', 'Lng'].include? sort_by
           sort_order = {'asc' => 1, 'desc' => -1}[sort_order]
@@ -33,16 +35,17 @@ module Api
           players = @mongo[:players]
           results = filter_name ? players.find({'Player' => filter_name}) : players.find
           results = sort_by ? results.sort(sort_by => sort_order) : results
-          results = results.limit(20).to_a
+          results = results.skip((page-1) * per_page)
+          results = results.limit(per_page).to_a
           # render view
           view_sort_order = {'Yds' => 'desc', 'TD' => 'desc', 'Lng' => 'desc'}
           view_sort_order[sort_by] = {1 => 'desc', -1 => 'asc'}[sort_order] if sort_by
           scope = OpenStruct.new({
             players: results,
-            page: 1,
             sort_by: sort_by,
             sort_order: view_sort_order,
             filter_name: filter_name,
+            page: page,
             year: 2021 })
           Slim::Template.new('views/players.slim').render(scope)
         end
