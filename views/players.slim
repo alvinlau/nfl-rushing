@@ -19,25 +19,21 @@ html
         input value=filter_name placeholder="filter name" name="filter_name" id="filter_name" type="text"
         button class="waves-effect waves-light btn"
           | Filter
-      ul class="pagination"
-        li
-          form hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}" hx-params="page" hx-target="#display-content" hx-swap="outerHTML"
-            input type="hidden" name="page" value=1
-            button class="waves-effect waves-light btn" beginning
+    ul class="pagination"
+      li
+        button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=1" hx-target="#display-content" hx-swap="outerHTML" beginning
+      li
         - unless page <= 1
-          li 
-            form hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}" hx-params="page" hx-target="#display-content" hx-swap="outerHTML"
-              input type="hidden" name="page" value=(page-1)
-              button class="waves-effect waves-light btn" prev
+          button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page-1}" hx-target="#display-content" hx-swap="outerHTML" prev
+        - else
+          button class="waves-effect waves-light btn disabled" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page-1}" hx-target="#display-content" hx-swap="outerHTML" prev
+      li
         - unless page >= last_page
-          li
-            form hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}" hx-params="page" hx-target="#display-content" hx-swap="outerHTML"
-              input type="hidden" name="page" value=page+1
-              button class="waves-effect waves-light btn" next
-        li
-          form hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}" hx-params="page" hx-target="#display-content" hx-swap="outerHTML"
-            input type="hidden" name="page" value=last_page
-            button class="waves-effect waves-light btn" last
+          button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page+1}" hx-target="#display-content" hx-swap="outerHTML" next
+        - else
+          button class="waves-effect waves-light btn disabled" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{page+1}" hx-target="#display-content" hx-swap="outerHTML" next
+      li
+        button class="waves-effect waves-light btn" hx-get="/v1/players?filter_name=#{filter_name}&sort_by=#{sort_by}&sort_order=#{sort_order}&page=#{last_page}" hx-target="#display-content" hx-swap="outerHTML" last
     #content
       - unless players.empty?
         table class="striped"
